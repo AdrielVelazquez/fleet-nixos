@@ -1,30 +1,28 @@
 {
-  fleet-nix,
+  gitlabPackages,
   pkgs,
   config,
   lib,
   ...
-}:
-let
+}: let
   cfg = config.services.fleet;
-in
-{
+in {
   options.services.fleet = {
     enable = lib.mkEnableOption "fleet";
-    package = lib.mkPackageOption fleet-nix.${pkgs.stdenv.hostPlatform.system} "fleet" { };
+    package = lib.mkPackageOption gitlabPackages.${pkgs.stdenv.hostPlatform.system} "fleet" {};
   };
 
   config = lib.mkIf cfg.enable {
     environment = {
-      systemPackages = [ cfg.package ];
+      systemPackages = [cfg.package];
       etc."default/orbit".source = "${cfg.package}/etc/default/orbit";
     };
 
     systemd.services.orbit = {
       description = "Orbit osquery";
 
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network.target" ];
+      wantedBy = ["multi-user.target"];
+      after = ["network.target"];
 
       serviceConfig = {
         ExecStart = "${cfg.package}/bin/orbit";
