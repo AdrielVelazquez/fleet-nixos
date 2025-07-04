@@ -37,7 +37,7 @@ stdenv.mkDerivation rec {
   ];
 
   src = requireFile rec {
-    message = "Could not find ${name} in the store. Please see ${url}.";
+    message = " Adriel is here Could not find ${name} in the store. Please see ${url}.";
     name = "fleet-osquery_${version}_${platform}.deb";
     url = "https://gitlab.com/proglottis/gitlab-team-nix/-/blob/main/README.md";
     inherit hash;
